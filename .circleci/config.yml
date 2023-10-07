@@ -1,8 +1,9 @@
-  version: 2.1
+version: 2.1
 
-  jobs:
-    deploy-job:
-      steps:
-        - add_ssh_keys:
-            fingerprints:
-              - "SO:ME:FIN:G:ER:PR:IN:T"
+orbs:
+  unity: game-ci/unity@x.y
+
+workflows:
+  create-unity-activation-file:
+    jobs:
+      - unity/create-activation-file
