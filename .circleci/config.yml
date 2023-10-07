@@ -3,7 +3,20 @@ version: 2.1
 orbs:
   unity: game-ci/unity@1.4.0
 
-workflows:
-  create-unity-activation-file:
-    jobs:
-      - unity/create-activation-file
+build:
+    executor:
+      name: "unity/ubuntu"
+      target_platform: "webgl"
+      editor_version: "2021.3.9f1"
+      resource_class: "large"
+    steps:
+      - checkout
+      - unity/build:
+          project-path: "src"
+          build-target: "WebGL"
+          compress: false
+          store-artifacts: false
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "src/Builds/WebGL"
