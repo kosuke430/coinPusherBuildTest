@@ -8,3 +8,9 @@ workflows:
   create-unity-activation-file:
     jobs:
       - unity/create-activation-file
+    
+    deploy-job:
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "SO:ME:FIN:G:ER:PR:IN:T"
