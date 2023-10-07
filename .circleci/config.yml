@@ -9,9 +9,9 @@ workflows:
       - unity/test:
           name: "test-linux"
           step-name: "Check if the tests run and results are uploaded"
-          unity-license-var-name: "UNITY_ENCODED_LICENSE"
-          unity-username-var-name: "UNITY_USERNAME"
-          unity-password-var-name: "UNITY_PASSWORD"
+          # unity-license-var-name: "UNITY_ENCODED_LICENSE"
+          # unity-username-var-name: "UNITY_USERNAME"
+          # unity-password-var-name: "UNITY_PASSWORD"
           executor:
             name: "unity/ubuntu"
             target_platform: "linux-il2cpp"
@@ -23,9 +23,9 @@ workflows:
       - unity/build:
           name: "build-webgl"
           step-name: "Build WebGL"
-          unity-license-var-name: "UNITY_ENCODED_LICENSE"
-          unity-username-var-name: "UNITY_USERNAME"
-          unity-password-var-name: "UNITY_PASSWORD"
+          # unity-license-var-name: "UNITY_ENCODED_LICENSE"
+          # unity-username-var-name: "UNITY_USERNAME"
+          # unity-password-var-name: "UNITY_PASSWORD"
           executor:
             name: "unity/ubuntu"
             target_platform: "webgl"
