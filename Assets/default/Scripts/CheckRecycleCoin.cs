@@ -4,14 +4,30 @@ using UnityEngine;
 
 public class CheckRecycleCoin : MonoBehaviour
 {
+    public static CheckRecycleCoin instance; // シングルトン
+
     public Queue<CoinController> recycleCoinQueue;
 
     // [SerializeField] private GameObject objectPool;
 
-    // Start is called before the first frame update
+     void Awake()
+    {
+        if (instance == null)
+        {
+            // 自身をインスタンスとする
+            instance = this;
+        }
+        else
+        {
+            // インスタンスが複数存在しないように、既に存在していたら自身を消去する
+            Destroy(gameObject);
+        }
+
+        recycleCoinQueue=CreateCoin.instance.coinQueue;
+    }
     void Start()
     {
-        recycleCoinQueue=CreateCoin.instance.coinQueue;
+
     }
 
     // Update is called once per frame
@@ -30,6 +46,8 @@ public class CheckRecycleCoin : MonoBehaviour
 
             Transform coinParent=other.transform;
             coinParent.gameObject.SetActive(false);
+            //獲得コインをカウントする
+            GameManager.instance.AddGetCoinCount();
             // other.transform.parent.SetParent(null,true);
             // CreateCoin.instance.Collect(coinParent.GetComponent<CoinController>());
             recycleCoinQueue.Enqueue(coinParent.GetComponent<CoinController>());
