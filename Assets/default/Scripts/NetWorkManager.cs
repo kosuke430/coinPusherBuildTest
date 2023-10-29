@@ -22,13 +22,27 @@ public class NetWorkManager : MonoBehaviour
 
         public int ranking;   
     }
+
+
+    public class RankingData
+    {
+        public RankingInfo[] rankingInfos;
+    }
+
+    [System.Serializable]
+    public class RankingInfo
+    {
+        public string name;
+        public int haveCoin;
+    }
     private string apiUrl="http://localhost:5263/api/CoinUserss";
 
     
-    private int thisUserID=1;
+    [SerializeField] private int thisUserID=6;
 
     public UserInfo testUser= new UserInfo();
     // Start is called before the first frame update
+
 
 
 
@@ -47,7 +61,7 @@ public class NetWorkManager : MonoBehaviour
         }
 
 
-        testUser.id=5;
+        testUser.id=thisUserID;
         GetMethod();
     }
 
@@ -61,6 +75,7 @@ public class NetWorkManager : MonoBehaviour
 
     void Start()
     {
+        GetRankingMethod();
     }
     
     /// <summary>
@@ -81,12 +96,22 @@ public class NetWorkManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(testUser);
         StartCoroutine(PostRequest(apiUrl,json));
+       
     }
 
     void PutMethod()
     {
         string json = JsonUtility.ToJson(testUser);
         StartCoroutine(PutStoreCoin(apiUrl,json));
+        //ランキングUIの更新
+        GetRankingMethod();
+    }
+    /// <summary>
+    /// ランキングを取得する処理を呼び出す
+    /// </summary>
+    void GetRankingMethod()
+    {
+        StartCoroutine(GetRanking(apiUrl));
     }
 
 
@@ -184,5 +209,39 @@ public class NetWorkManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// ランキングの取得とUI表示の更新を行う
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    IEnumerator GetRanking(string url)
+    {
+
+        UnityWebRequest www = UnityWebRequest.Get(url+"/ranking");
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success) {
+            Debug.Log(www.error);
+        }
+        else {
+            Debug.Log("ランキング受け取り成功");
+            RankingData rankingJsonData = new RankingData();
+            string catchData="{ \"rankingInfos\":"+www.downloadHandler.text+"}";
+            Debug.Log(catchData);
+            JsonUtility.FromJsonOverwrite(catchData,rankingJsonData);
+            Debug.Log($"jsonData:{rankingJsonData}");
+            Debug.Log(www.downloadHandler.text);
+            var rankingcount=0;
+            foreach (var item in rankingJsonData.rankingInfos)
+            {
+                Debug.Log("name: " + item.name);
+                Debug.Log("haveCoin: " + item.haveCoin);
+                GameManager.instance.RankingNameTexts[rankingcount].text=item.name;
+                GameManager.instance.RankinghaveCoinTexts[rankingcount].text=item.haveCoin.ToString();
+                rankingcount++;
+            }
+            
+        }
+    }
 
 }

@@ -12,7 +12,14 @@ public class GameManager : MonoBehaviour
     //貯玉の総数を表示するテキスト
     [SerializeField] private TMPro.TextMeshProUGUI AllStoreCoinText;
 
+    [SerializeField] public List<TMPro.TextMeshProUGUI> RankingNameTexts;
 
+    [SerializeField] public List<TMPro.TextMeshProUGUI> RankinghaveCoinTexts;
+
+    /// <summary>
+    /// solo,1P,2Pのいづれかを入れる
+    /// </summary>
+    public string Gamemode;
 
     private int getCoinCount=0;
 
@@ -74,4 +81,6 @@ public class GameManager : MonoBehaviour
     {
         getCoinCount-=AddStoreCoinNum;
     }
+
+    
 }
