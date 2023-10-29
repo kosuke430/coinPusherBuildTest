@@ -26,6 +26,10 @@ public class ThrowCoinScript : MonoBehaviour
     
     [SerializeField] private GameObject coinPrefab;
 
+    
+
+
+
     //シングルトンを使う
     void Awake()
     {
@@ -105,18 +109,26 @@ public class ThrowCoinScript : MonoBehaviour
             _coin.gameObject.SetActive(true);
         }
     }
-
-    public void SetCoinAsync(float x,float y,float z)
+    /// <summary>
+    /// ハブから受け取ったコインの座標からコインを生成する
+    /// </summary>
+    /// <param name="asyncCoinPosition"></param>
+    public void SetCoinAsync(Vector3 asyncCoinPosition)
     {
         Debug.Log("SetCoinAsync");
-        Vector3 _addCoinPosition=new Vector3(x,y,z);
-        Debug.Log(_addCoinPosition);
-        SetCoin(_addCoinPosition);
+        SetCoin(asyncCoinPosition);
     }
 
+    /// <summary>
+    /// 座標からコインを生成する
+    /// </summary>
+    /// <param name="coinPosition"></param> <summary>
+    /// 
+    /// </summary>
+    /// <param name="coinPosition"></param>
     public void SetCoin(Vector3 coinPosition)
     {
-        Debug.Log(coinPosition);
+        Debug.Log("SetCoin");
         _coin=CreateCoin.instance.Launch(coinPosition);
         _coin.gameObject.SetActive(true);
         _coin.transform.rotation=Quaternion.Euler(Random.Range(0,70),Random.Range(0,30),Random.Range(0,70));

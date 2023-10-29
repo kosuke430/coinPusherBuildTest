@@ -17,7 +17,7 @@ public class NetWorkManager : MonoBehaviour
     public class UserInfo 
     {
         public long id;
-        public string? name;
+        public string name;
         public int haveCoin;
 
         public int ranking;   
