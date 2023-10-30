@@ -7,6 +7,7 @@ using TMPro;
 public class AddStoreCoin : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private GameObject warningText;
 
     
     
@@ -32,6 +33,7 @@ public class AddStoreCoin : MonoBehaviour
         } 
         else
         {   
+            warningText.SetActive(true);
             Debug.Log("獲得コイン数が足りません");
         }
     }

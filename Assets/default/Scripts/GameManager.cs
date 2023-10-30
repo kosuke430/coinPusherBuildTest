@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
         set => getCoinCount = value;
     }
 
+    public bool CloseMenu=false;
+
 
    void Awake()
     {

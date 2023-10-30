@@ -9,11 +9,14 @@ public class StartMenu : MonoBehaviour
     [SerializeField] private GameObject startMenu;
     [SerializeField] private TMPro.TextMeshProUGUI playModeText;
 
+    
+
     public void OnClickStartButton()
     {
         GameManager.instance.Gamemode = "solo";
         playModeText.text = "PlayMode:" + GameManager.instance.Gamemode;
         startMenu.SetActive(false);
+        GameManager.instance.CloseMenu=true;
     }
 
     public void OnClickOnePlayerButton()
@@ -21,6 +24,7 @@ public class StartMenu : MonoBehaviour
         GameManager.instance.Gamemode = "1P";
         playModeText.text = "PlayMode:" + GameManager.instance.Gamemode;
         startMenu.SetActive(false);
+        GameManager.instance.CloseMenu=true;
     }
 
     public void OnClickTwoPlayerButton()
@@ -28,6 +32,7 @@ public class StartMenu : MonoBehaviour
         GameManager.instance.Gamemode = "2P";
         playModeText.text = "PlayMode:" + GameManager.instance.Gamemode;
         startMenu.SetActive(false);
+        GameManager.instance.CloseMenu=true;
     }
 
 }

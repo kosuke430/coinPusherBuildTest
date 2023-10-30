@@ -12,6 +12,7 @@ public class SetStoreCoinMenu : MonoBehaviour
     /// </summary>
     public void SetCoinMenu()
     {
+        Debug.Log("押された");
         menuPanel.SetActive(true);
         warningText.SetActive(false);
     }

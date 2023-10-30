@@ -9,6 +9,8 @@ public class ThrowCoinScript : MonoBehaviour
     public static Vector3 screenPos; 
     public static Vector3 worldPos;
 
+    private static float distance;
+
     private CoinController _coin;
 
     private CoinController _asyncCoin;
@@ -25,6 +27,9 @@ public class ThrowCoinScript : MonoBehaviour
 
     
     [SerializeField] private GameObject coinPrefab;
+
+    //押した時のコイン生成するY座標の上限
+    [SerializeField] private Transform UpperLimitY;
 
     
 
@@ -44,6 +49,11 @@ public class ThrowCoinScript : MonoBehaviour
         
     }
 
+    void start()
+    {
+        
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -52,16 +62,23 @@ public class ThrowCoinScript : MonoBehaviour
            if (Input.GetMouseButtonDown(0)||Input.GetKeyDown(KeyCode.Space))
             {
                 
-                var distance = Vector3.Distance(centerStage.transform.position, Camera.main.transform.position);
+                distance = Vector3.Distance(centerStage.transform.position, Camera.main.transform.position);
                 screenPos=new Vector3(Input.mousePosition.x,Input.mousePosition.y,distance);
                 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+                Debug.Log(worldPos.y);
+                if(worldPos.y<UpperLimitY.position.y)
+                {
+                    SetCoinPosition(worldPos);
+                    timeElapsed = 0.0f;
+                }
+                
+                // worldPos = Camera.main.ScreenToWorldPoint(screenPos);
 
-                Vector3 fixWorldPos = new Vector3 (-1.0f,5.0f,worldPos.z);
-
-                SignalR.instance.SendCoinPosition(fixWorldPos.x,fixWorldPos.y,fixWorldPos.z,GameManager.instance.Gamemode);
+                // Vector3 fixWorldPos = new Vector3 (-1.0f,5.0f,worldPos.z);
+                
 
                 // Debug.Log(screenPos);
-                Debug.Log($"CreateCoinPos:{fixWorldPos}");
+                
                 //Quaternion.identityは回転させないという意味
                 // _coin=Instantiate(coinPrefab, fixWorldPos, Quaternion.identity);
                 
@@ -69,29 +86,49 @@ public class ThrowCoinScript : MonoBehaviour
                 // _coin.gameObject.SetActive(true);
                 // _coin.transform.rotation=Quaternion.Euler(Random.Range(0,70),Random.Range(0,30),Random.Range(0,70));
 
-                SetCoin(fixWorldPos);
-
-                if(Input.GetKeyDown(KeyCode.Space))
-                {
-                    for (var i=0;i<onePushSpawn-1;++i)
-                    {
-                        // _coin=CreateCoin.instance.Launch(fixWorldPos);
-                        // _coin.gameObject.SetActive(true);
-                        // _coin.transform.rotation=Quaternion.Euler(Random.Range(0,70),Random.Range(0,30),Random.Range(0,70));
-                        ClickTestCoinAdd();
-                    }
-                }
                 
-                timeElapsed = 0.0f;
+                ////デバッグ用
+                // if(Input.GetKeyDown(KeyCode.Space))
+                // {
+                //     for (var i=0;i<onePushSpawn-1;++i)
+                //     {
+                //         // _coin=CreateCoin.instance.Launch(fixWorldPos);
+                //         // _coin.gameObject.SetActive(true);
+                //         // _coin.transform.rotation=Quaternion.Euler(Random.Range(0,70),Random.Range(0,30),Random.Range(0,70));
+                //         ClickTestCoinAdd();
+                //     }
+                // }
+                
+                
             }
         }
         else
         {
-             timeElapsed += Time.deltaTime;
+            timeElapsed += Time.deltaTime;
         }
         
 
         
+    }
+
+    
+
+    /// <summary>
+    /// ワールド座標からコインを生成する
+    /// </summary>
+    /// <param name="screenPos"></param>
+    /// <returns></returns>
+    public void SetCoinPosition(Vector3 worldPos)
+    {
+       
+    
+
+        Vector3 fixWorldPos = new Vector3 (-1.0f,5.0f,worldPos.z);
+        SignalR.instance.SendCoinPosition(fixWorldPos.x,fixWorldPos.y,fixWorldPos.z,GameManager.instance.Gamemode);
+        Debug.Log($"CreateCoinPos:{fixWorldPos}");
+        SetCoin(fixWorldPos);
+
+
     }
 
     public void ClickTestCoinAdd()
@@ -128,10 +165,13 @@ public class ThrowCoinScript : MonoBehaviour
     /// <param name="coinPosition"></param>
     public void SetCoin(Vector3 coinPosition)
     {
-        Debug.Log("SetCoin");
-        _coin=CreateCoin.instance.Launch(coinPosition);
-        _coin.gameObject.SetActive(true);
-        _coin.transform.rotation=Quaternion.Euler(Random.Range(0,70),Random.Range(0,30),Random.Range(0,70));
+        if(GameManager.instance.CloseMenu)
+        {
+            Debug.Log("SetCoin");
+            _coin=CreateCoin.instance.Launch(coinPosition);
+            _coin.gameObject.SetActive(true);
+            _coin.transform.rotation=Quaternion.Euler(Random.Range(0,70),Random.Range(0,30),Random.Range(0,70));
+        }
     }
     
 }
