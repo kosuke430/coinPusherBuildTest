@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// solo,1P,2Pのいづれかを入れる
     /// </summary>
-    public string Gamemode;
+    public string Gamemode="notPlayer";
 
     private int getCoinCount=0;
 

@@ -53,8 +53,11 @@ public class SignalR : MonoBehaviour
             Debug.Log(_addCoinPosition);
             Debug.Log(sender);
             
-
-            _action.Enqueue(() => ThrowCoinScript.instance.SetCoinAsync(_addCoinPosition));
+            if(!(sender=="solo")&&(GameManager.instance.Gamemode=="1P"||GameManager.instance.Gamemode=="2P"))
+            {
+                _action.Enqueue(() => ThrowCoinScript.instance.SetCoinAsync(_addCoinPosition));
+            }
+           
 
         });
 
