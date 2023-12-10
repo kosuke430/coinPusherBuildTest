@@ -30,6 +30,9 @@ public class ThrowCoinScript : MonoBehaviour
 
     //押した時のコイン生成するY座標の上限
     [SerializeField] private Transform UpperLimitY;
+    //押した時のコイン生成するY座標の下限
+    [SerializeField] private Transform DownLimitY;
+
 
     
 
@@ -49,10 +52,6 @@ public class ThrowCoinScript : MonoBehaviour
         
     }
 
-    void start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -66,7 +65,7 @@ public class ThrowCoinScript : MonoBehaviour
                 screenPos=new Vector3(Input.mousePosition.x,Input.mousePosition.y,distance);
                 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
                 Debug.Log(worldPos.y);
-                if(worldPos.y<UpperLimitY.position.y)
+                if(worldPos.y<UpperLimitY.position.y&&worldPos.y>DownLimitY.position.y)
                 {
                     SetCoinPosition(worldPos);
                     timeElapsed = 0.0f;

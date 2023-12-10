@@ -20,8 +20,18 @@ public class NetWorkManager : MonoBehaviour
         public string name;
         public int haveCoin;
 
-        public int ranking;   
+        public int ranking;
+
+        public string token;
     }
+
+    // //ホストがリクエストする際に必要な情報
+    // [System.Serializable]
+    // public class 
+    // {        
+    //     public long id;
+    //     public string name;
+    // }
 
 
     public class RankingData
@@ -148,9 +158,12 @@ public class NetWorkManager : MonoBehaviour
                 testUser.name=item.name;
                 testUser.haveCoin=item.haveCoin;
                 testUser.ranking=item.ranking;
+                testUser.token=item.token;
                 Debug.Log("id: " + testUser.id);
                 Debug.Log("name: " + testUser.name);
                 Debug.Log("haveCoin: " + testUser.haveCoin);
+                Debug.Log("ranking: " + testUser.ranking);
+                Debug.Log("token: " + testUser.token);
             }
 
 
@@ -173,7 +186,7 @@ public class NetWorkManager : MonoBehaviour
         request.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
- 
+
         Debug.Log("Response: " + request.downloadHandler.text);
 
         if (request.isNetworkError ||request.isHttpError)  // 失敗
